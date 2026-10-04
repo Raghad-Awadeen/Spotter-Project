@@ -1,4 +1,5 @@
 # Spotter-Project
+
 # Spotter ML Assessment — Freight Rate Prediction
 
 Machine learning solution for predicting freight rates based on shipment, route, equipment, market, and date-related features.
@@ -16,7 +17,7 @@ The project includes:
 - Feature analysis and engineering
 - Comparison of multiple regression models
 - Model evaluation using MAE, RMSE, and R²
-- Final model training
+- Final model selection and training
 - Predictions for the provided validation dataset
 
 ## Project Structure
@@ -35,7 +36,6 @@ Spotter-ML-Assessment/
 │   ├── 02_model_training_and_evaluation.ipynb
 │   └── 03_final_model_and_validation.ipynb
 │
-│
 ├── validation_predictions.csv
 ├── score.py
 ├── requirements.txt
@@ -44,7 +44,7 @@ Spotter-ML-Assessment/
 
 ## Dataset
 
-The project uses three datasets provided as part of the assessment:
+The project uses the datasets provided as part of the assessment.
 
 ### `train_test.csv`
 
@@ -70,6 +70,10 @@ load_id
 
 December input data provided for evaluating the model's predictions for a fixed route and shipment configuration.
 
+### `december_predictions.csv`
+
+Contains the model predictions generated for the December chart inputs.
+
 ## Data Preparation
 
 The data preparation process included:
@@ -77,9 +81,9 @@ The data preparation process included:
 - Reviewing data types and column structures
 - Handling missing values
 - Investigating invalid values
-- Handling negative weight values
+- Handling negative values in the `weight` feature
 - Converting date information into useful features
-- Reviewing categorical and numerical features
+- Reviewing numerical and categorical features
 - Checking feature distributions and relationships
 - Investigating potential outliers and unusual observations
 - Preparing the data for machine learning models
@@ -100,20 +104,25 @@ EDA was performed to understand:
 - Equipment type differences
 - Distance and weight relationships
 - Market-related patterns
-- Date and time-related patterns
+- Date-related patterns
 - Potential outliers and unusual observations
 
-The EDA is available in:
+The data cleaning and EDA process is available in:
 
 ```text
-notebooks/data_cleaning_eda.ipynb
+notebooks/01_data_cleaning_and_eda.ipynb
 ```
 
 ## Modeling Approach
 
-Several regression models were evaluated using the prepared training data.
+Multiple regression models were trained and evaluated using the prepared training data.
 
-The model comparison included tree-based and boosting approaches.
+The evaluated models were:
+
+- CatBoost
+- Ridge
+- LightGBM
+- XGBoost
 
 Models were evaluated using:
 
@@ -121,11 +130,32 @@ Models were evaluated using:
 - Root Mean Squared Error (RMSE)
 - R² Score
 
-The model comparison and evaluation process can be found in:
+The model comparison and evaluation process is available in:
 
 ```text
-notebooks/model_comparison.ipynb
+notebooks/02_model_training_and_evaluation.ipynb
 ```
+
+## Model Results
+
+The evaluated models achieved the following results:
+
+| Model | MAE | RMSE | R² |
+|---|---:|---:|---:|
+| **CatBoost** | **103.85** | **646.65** | **0.8210** |
+| Ridge | 166.62 | 655.27 | 0.8162 |
+| LightGBM | 246.38 | 694.77 | 0.7934 |
+| XGBoost | 292.57 | 743.17 | 0.7636 |
+
+### Model Selection
+
+**CatBoost was selected as the final model** because it achieved:
+
+- The lowest MAE: **103.85**
+- The lowest RMSE: **646.65**
+- The highest R²: **0.8210**
+
+This indicates that CatBoost provided the best overall performance among the evaluated models on the evaluation data.
 
 ## Evaluation Metrics
 
@@ -133,25 +163,31 @@ notebooks/model_comparison.ipynb
 
 Mean Absolute Error measures the average absolute difference between the actual and predicted freight rates.
 
-Lower values indicate better performance.
+**Lower values indicate better performance.**
 
 ### RMSE
 
 Root Mean Squared Error gives a higher penalty to large prediction errors.
 
-Lower values indicate better performance.
+**Lower values indicate better performance.**
 
 ### R²
 
-R² measures how much of the variation in the target variable is explained by the model.
+R² measures the proportion of variance in the target variable explained by the model.
 
-Higher values generally indicate better performance.
+**Higher values generally indicate better performance.**
 
 ## Final Model
 
-After comparing the evaluated models, the final model was selected based on validation performance and overall suitability for the dataset.
+The final model is a **CatBoost Regressor**.
 
-The final model implementation is available in:
+The final model training and validation workflow is available in:
+
+```text
+notebooks/03_final_model_and_validation.ipynb
+```
+
+This notebook contains the final model training process and generation of predictions for the validation dataset.
 
 ## Predictions
 
@@ -194,44 +230,30 @@ pip install -r requirements.txt
 Open:
 
 ```text
-notebooks/data_cleaning_eda.ipynb
+notebooks/01_data_cleaning_and_eda.ipynb
 ```
 
 Run the notebook to review the data cleaning and exploratory analysis process.
 
-### 2. Model Comparison
+### 2. Model Training and Evaluation
 
 Open:
 
 ```text
-notebooks/model_comparison.ipynb
+notebooks/02_model_training_and_evaluation.ipynb
 ```
 
-Run the notebook to train and compare the evaluated models.
+Run the notebook to train and compare the evaluated regression models.
 
-### 3. Final Model
+### 3. Final Model and Validation
 
 Open:
 
 ```text
-notebooks/final_model.ipynb
+notebooks/03_final_model_and_validation.ipynb
 ```
 
-This notebook contains the final model training and validation prediction workflow.
-
-### 4. Generate Predictions
-
-The final prediction workflow is also available in:
-
-```text
-src/final_model.py
-```
-
-The resulting predictions are saved as:
-
-```text
-validation_predictions.csv
-```
+Run the notebook to train the final CatBoost model and generate predictions for the validation dataset.
 
 ## Requirements
 
