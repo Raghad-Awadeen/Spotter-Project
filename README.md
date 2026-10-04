@@ -27,6 +27,7 @@ Spotter-ML-Assessment/
 ├── data/
 │   ├── train_test.csv
 │   ├── validation.csv
+│   ├── december_predictions.csv
 │   └── december_chart_inputs.csv
 │
 ├── notebooks/
